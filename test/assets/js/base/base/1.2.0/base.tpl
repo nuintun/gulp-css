@@ -1,20 +1,20 @@
 {{#if title}}
-<div class="{{classPrefix}}-title" data-role="title">{{{title}}}</div>
+  <div class="{{classPrefix}}-title" data-role="title">{{{title}}}</div>
 {{/if}}
 <div class="{{classPrefix}}-container">
-    <div class="{{classPrefix}}-message" data-role="message">{{{message}}}</div>
-    {{#if hasFoot}}
+  <div class="{{classPrefix}}-message" data-role="message">{{{message}}}</div>
+  {{#if hasFoot}}
     <div class="{{classPrefix}}-operation" data-role="foot">
-        {{#if confirmTpl}}
+      {{#if confirmTpl}}
         <div class="{{classPrefix}}-confirm" data-role="confirm">
-            {{{confirmTpl}}}
+          {{{confirmTpl}}}
         </div>
-        {{/if}}
-        {{#if cancelTpl}}
+      {{/if}}
+      {{#if cancelTpl}}
         <div class="{{classPrefix}}-cancel" data-role="cancel">
-            {{{cancelTpl}}}
+          {{{cancelTpl}}}
         </div>
-        {{/if}}
+      {{/if}}
     </div>
-    {{/if}}
+  {{/if}}
 </div>
