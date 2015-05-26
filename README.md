@@ -10,17 +10,34 @@ gulp-css
 
 ###Usage
 ```js
+var path = require('path');
+var join = path.join;
+var relative = path.relative;
 var gulp = require('gulp');
 var css = require('gulp-css');
+
+// Fixed css resource path
+function onpath(path, property, file, wwwroot){
+  if (/^[^./\\]/.test(path)) {
+    path = './' + path;
+  }
+
+  if (path.indexOf('.') === 0) {
+    path = join(dirname(file), path);
+    path = relative(wwwroot, path);
+    path = '/' + path;
+    path = path.replace(/\\+/g, '/');
+  }
+
+  path = path.replace('assets/', 'online/');
+
+  return path;
+}
 
 // Task
 gulp.task('default', function (){
   gulp.src('assets/css/**/*.css')
-    .pipe(css({
-      onpath: function (path){
-        return path.replace('assets/', 'online/')
-      }
-    }))
+    .pipe(css({ onpath: onpath }))
     .pipe(gulp.dest('online/css'))
 });
 ```
