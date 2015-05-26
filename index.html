@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gulp-css by nuintun</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/nuintun/gulp-css">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/nuintun/gulp-css/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/nuintun/gulp-css/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Gulp-css</h1>
+          <p>A gulp plugin for css transport and concat</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/nuintun">nuintun</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a id="gulp-css" class="anchor" href="#gulp-css" aria-hidden="true"><span class="octicon octicon-link"></span></a>gulp-css</h1>
+
+<blockquote>
+<p>A gulp plugin for css transport and concat</p>
+
+<p><a href="https://david-dm.org/nuintun/gulp-css"><img src="http://img.shields.io/david/nuintun/gulp-css.svg?style=flat-square" alt="Dependencies"></a></p>
+</blockquote>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> path <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> join <span class="pl-k">=</span> path.join;
+<span class="pl-k">var</span> relative <span class="pl-k">=</span> path.relative;
+<span class="pl-k">var</span> gulp <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>gulp<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> css <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>gulp-css<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// Fixed css resource path</span>
+<span class="pl-k">function</span> <span class="pl-en">onpath</span>(<span class="pl-smi">path</span>, <span class="pl-smi">property</span>, <span class="pl-smi">file</span>, <span class="pl-smi">wwwroot</span>){
+  <span class="pl-k">if</span> (<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-k">^</span><span class="pl-c1">[<span class="pl-k">^</span><span class="pl-c1">.</span>/<span class="pl-cce">\\</span>]</span><span class="pl-pds">/</span></span>.<span class="pl-c1">test</span>(path)) {
+    path <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>./<span class="pl-pds">'</span></span> <span class="pl-k">+</span> path;
+  }
+
+  <span class="pl-k">if</span> (path.<span class="pl-c1">indexOf</span>(<span class="pl-s"><span class="pl-pds">'</span>.<span class="pl-pds">'</span></span>) <span class="pl-k">===</span> <span class="pl-c1">0</span>) {
+    path <span class="pl-k">=</span> <span class="pl-c1">join</span>(dirname(file), path);
+    path <span class="pl-k">=</span> relative(wwwroot, path);
+    path <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span> <span class="pl-k">+</span> path;
+    path <span class="pl-k">=</span> path.<span class="pl-c1">replace</span>(<span class="pl-sr"><span class="pl-pds">/</span><span class="pl-cce">\\</span><span class="pl-k">+</span><span class="pl-pds">/</span>g</span>, <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>);
+  }
+
+  path <span class="pl-k">=</span> path.<span class="pl-c1">replace</span>(<span class="pl-s"><span class="pl-pds">'</span>assets/<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>online/<span class="pl-pds">'</span></span>);
+
+  <span class="pl-k">return</span> path;
+}
+
+<span class="pl-c">// Task</span>
+gulp.task(<span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (){
+  gulp.<span class="pl-c1">src</span>(<span class="pl-s"><span class="pl-pds">'</span>assets/css/**/*.css<span class="pl-pds">'</span></span>)
+    .pipe(css({ onpath<span class="pl-k">:</span> onpath }))
+    .pipe(gulp.dest(<span class="pl-s"><span class="pl-pds">'</span>online/css<span class="pl-pds">'</span></span>))
+});</pre></div>
+
+<h3>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h3>
+
+<h4>
+<a id="cssoptions" class="anchor" href="#cssoptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>css(options)</h4>
+
+<h5>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>options</em>
+</h5>
+
+<ul>
+<li>
+<p>prefix <code>String|Function</code></p>
+
+<p>对样式文件中的类名添加前缀类名。</p>
+</li>
+<li>
+<p>onpath <code>Function</code></p>
+
+<p>样式文件中的资源文件路径处理回调。</p>
+</li>
+<li>
+<p>cache <code>Boolean</code></p>
+
+<p>文件内存缓存，转换完成的文件会暂时存储在内存中以便提升转换效率。</p>
+</li>
+<li>
+<p>wwwroot <code>String</code></p>
+
+<p>网站根目录配置，路径相对于 <code>gulpfile.js</code> 目录。</p>
+</li>
+<li>
+<p>rename <code>Object|Function</code></p>
+
+<p>重命名文件，有 <code>debug</code> 和 <code>min</code> 两个配置可选，打开后文件名会自动添加 -debug 和 -min 后缀，debug 打开时 min 配置无效。当 rename 是函数的时候要返回 <code>{ prefix: '', suffix: '' }</code> 格式的对象，分别对应前缀和后缀。</p>
+</li>
+<li>
+<p>compress <code>Boolean</code></p>
+
+<p>是否压缩样式代码。</p>
+</li>
+</ul>
+
+<blockquote>
+<p>注意事项：<em>样式路径以 <code>/</code> 结尾会默认用 <code>index.css</code> 补全</em>， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。</p>
+</blockquote>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
