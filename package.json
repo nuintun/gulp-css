@@ -29,7 +29,8 @@
     "gulp",
     "css",
     "concat",
-    "transport"
+    "transport",
+    "gulpplugin"
   ],
   "dependencies": {
     "is": "^3.0.1",
