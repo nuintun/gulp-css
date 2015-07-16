@@ -28,6 +28,3 @@ node_modules
 
 #WebStorm
 .idea
-
-#Editor config
-.editorconfig
