@@ -32,9 +32,8 @@ function main(options){
 }
 
 /**
- * Exports module.
+ * exports module.
  */
-
 main.cache = {};
 main.cache.clean = cache.clean;
 main.cwd = util.cwd;
