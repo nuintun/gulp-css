@@ -4,7 +4,6 @@
 
 'use strict';
 
-var through = require('through2');
 var duplexer = require('duplexer2');
 var util = require('./lib/util');
 var cache = require('./lib/cache');
@@ -12,23 +11,13 @@ var include = require('./lib/include');
 var concat = require('./lib/concat');
 
 function main(options){
-  var input = through.obj({ objectMode: true });
-  var output = through.obj({ objectMode: true });
+  var input = include(options);
+  var output = concat();
+  var duplex = duplexer({ objectMode: true }, input, output);
 
-  var monitor = function (stream){
-    stream.on('error', function (error){
-      output.emit('error', error);
-    });
+  input.pipe(output);
 
-    return stream;
-  };
-
-  monitor(input)
-    .pipe(monitor(include(options)))
-    .pipe(monitor(concat()))
-    .pipe(output);
-
-  return duplexer({ objectMode: true }, input, output);
+  return duplex;
 }
 
 main.cache = {};
