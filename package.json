@@ -1,18 +1,18 @@
 {
-  "name": "css",
+  "name": "gulp-css",
   "version": "0.0.1",
   "description": "A gulp plugin for cmd transport and concat",
   "author": {
     "name": "nuintun",
     "email": "nuintun@qq.com"
   },
-  "homepage": "https://nuintun.github.io/css",
+  "homepage": "https://nuintun.github.io/gulp-css",
   "repository": {
     "type": "git",
-    "url": "git://github.com/nuintun/css.git"
+    "url": "git://github.com/nuintun/gulp-css.git"
   },
   "bugs": {
-    "url": "https://github.com/nuintun/css/issues",
+    "url": "https://github.com/nuintun/gulp-css/issues",
     "email": "nuintun@qq.com"
   },
   "license": "MIT",
@@ -28,16 +28,14 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "urix": "^0.1.0",
-    "inherits": "^2.0.1",
-    "source-map": "^0.1.38",
-    "source-map-resolve": "^0.3.0"
+    "is": "^3.1.0",
+    "css": "^2.2.1",
+    "vinyl": "^1.0.0",
+    "colors": "^1.1.2",
+    "debug": "^2.2.0",
+    "readable-stream": "^2.0.2"
   },
   "devDependencies": {
-    "mocha": "^1.21.3",
-    "should": "^4.0.4",
-    "matcha": "^0.5.0",
-    "bytes": "^1.0.0"
   },
   "readmeFilename": "README.md",
   "scripts": {
