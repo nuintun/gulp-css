@@ -50,7 +50,7 @@
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
 
-<div class="highlight highlight-js"><pre><span class="pl-k">var</span> path <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path<span class="pl-pds">'</span></span>);
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> path <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path<span class="pl-pds">'</span></span>);
 <span class="pl-k">var</span> join <span class="pl-k">=</span> path.join;
 <span class="pl-k">var</span> relative <span class="pl-k">=</span> path.relative;
 <span class="pl-k">var</span> gulp <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>gulp<span class="pl-pds">'</span></span>);
@@ -76,7 +76,7 @@
 
 <span class="pl-c">// Task</span>
 gulp.task(<span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (){
-  gulp.<span class="pl-c1">src</span>(<span class="pl-s"><span class="pl-pds">'</span>assets/css/**/*.css<span class="pl-pds">'</span></span>)
+  gulp.src(<span class="pl-s"><span class="pl-pds">'</span>assets/css/**/*.css<span class="pl-pds">'</span></span>)
     .pipe(css({ onpath<span class="pl-k">:</span> onpath }))
     .pipe(gulp.dest(<span class="pl-s"><span class="pl-pds">'</span>online/css<span class="pl-pds">'</span></span>))
 });</pre></div>
@@ -92,6 +92,11 @@ gulp.task(<span class="pl-s"><span class="pl-pds">'</span>default<span class="pl
 </h5>
 
 <ul>
+<li>
+<p>include <code>Boolean</code></p>
+
+<p>是否合并引入的样式文件。</p>
+</li>
 <li>
 <p>prefix <code>String|Function</code></p>
 
