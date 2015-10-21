@@ -46,6 +46,10 @@ gulp.task('default', function (){
 ####css(options)
 #####  *options* 
 
+- include ```Boolean```
+  
+  是否合并引入的样式文件。
+
 - prefix ```String|Function```
   
   对样式文件中的类名添加前缀类名。
