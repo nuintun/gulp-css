@@ -27,6 +27,6 @@ main.debug = util.debug;
 main.colors = util.colors;
 
 /**
- * exports module.
+ * exports module
  */
 module.exports = main;
