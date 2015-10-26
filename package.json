@@ -32,7 +32,9 @@
     "vinyl": "^1.1.0",
     "colors": "^1.1.2",
     "debug": "^2.2.0",
-    "readable-stream": "^2.0.3",
+    "extend": "https://github.com/nuintun/extend/archive/master.tar.gz",
+    "through": "https://github.com/nuintun/through/archive/master.tar.gz",
+    "duplexer": "https://github.com/nuintun/duplexer/archive/master.tar.gz",
     "css-deps": "https://github.com/nuintun/css-deps/archive/master.tar.gz"
   },
   "devDependencies": {
