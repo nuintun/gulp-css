@@ -70,8 +70,4 @@ gulp.task('default', function (){
   
   重命名文件，有 ```debug``` 和 ```min``` 两个配置可选，打开后文件名会自动添加 -debug 和 -min 后缀，debug 打开时 min 配置无效。当 rename 是函数的时候要返回 ```{ prefix: '', suffix: '' }``` 格式的对象，分别对应前缀和后缀。
 
-- compress ```Boolean```
-  
-  是否压缩样式代码。
-
 >注意事项：*样式路径以 ```/``` 结尾会默认用 ```index.css``` 补全*， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。
