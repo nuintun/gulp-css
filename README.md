@@ -14,7 +14,7 @@ var path = require('path');
 var join = path.join;
 var relative = path.relative;
 var gulp = require('gulp');
-var css = require('gulp-css');
+var css = require('@nuintun/gulp-css');
 
 // Fixed css resource path
 function onpath(path, property, file, wwwroot){
