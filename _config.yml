@@ -1,0 +1,8 @@
+title: Gulp-css
+description: A gulp plugin for css transport and concat
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-midnight
+
+gems:
+  - jekyll-mentions
