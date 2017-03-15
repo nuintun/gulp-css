@@ -8,7 +8,7 @@ gulp-css
 [david-image]: http://img.shields.io/david/nuintun/gulp-css.svg?style=flat-square
 [david-url]: https://david-dm.org/nuintun/gulp-css
 
-###Usage
+### Usage
 ```js
 var path = require('path');
 var join = path.join;
@@ -42,9 +42,9 @@ gulp.task('default', function (){
 });
 ```
 
-###API
-####css(options)
-#####  *options* 
+### API
+#### css(options)
+##### *options* 
 
 - include ```Boolean```
   
