@@ -13,7 +13,7 @@ var duplexer = require('@nuintun/duplexer');
 /**
  * main
  * @param options
- * @returns {Duplexer|*}
+ * @returns {Duplexer}
  */
 function main(options) {
   var input = transform(options);
