@@ -28,7 +28,6 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "vinyl": "^2.0.2",
     "debug": "^2.6.6",
     "@nuintun/through": "https://github.com/nuintun/through/archive/master.tar.gz",
     "@nuintun/duplexer": "https://github.com/nuintun/duplexer/archive/master.tar.gz",
