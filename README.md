@@ -45,7 +45,7 @@ gulp.task('default', function (){
 #### css(options)
 ##### *options*
 
-- map ```Array```
+- map ```Function```
 
   配置模块ID路径映射修改，可用于路径转换。
 
