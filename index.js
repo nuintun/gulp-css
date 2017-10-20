@@ -1,6 +1,6 @@
 /*!
  * index
- * Version: 0.0.1
+ *
  * Date: 2017/05/19
  * https://github.com/nuintun/gulp-css
  *
@@ -35,7 +35,7 @@ main.cwd = gutil.cwd;
 main.cache = util.cache;
 main.debug = util.debug;
 main.print = util.print;
-main.colors = gutil.colors;
+main.chalk = gutil.chalk;
 
 /**
  * exports module
