@@ -20,13 +20,7 @@
   "engines": {
     "node": ">=4.0.0"
   },
-  "keywords": [
-    "gulp",
-    "css",
-    "concat",
-    "transport",
-    "gulpplugin"
-  ],
+  "keywords": ["gulp", "css", "concat", "transport", "gulpplugin"],
   "dependencies": {
     "@nuintun/through": "https://github.com/nuintun/through/archive/master.tar.gz",
     "@nuintun/duplexer": "https://github.com/nuintun/duplexer/archive/master.tar.gz",
