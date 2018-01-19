@@ -51,7 +51,7 @@ gulp.task('default', function() {
 
 * map `Function`
 
-  配置模块 ID 路径映射修改，可用于路径转换。
+  配置模块路径映射，可用于路径转换（返回的映射字符必须符合文件路径规则，会同步更新模块 `ID` 和 输出文件名）。
 
 * include `Boolean`
 
@@ -72,9 +72,5 @@ gulp.task('default', function() {
 * wwwroot `String`
 
   网站根目录配置，路径相对于 `process.cwd()` 目录。
-
-* rename `Object|Function`
-
-  重命名文件，有 `debug` 和 `min` 两个配置可选，打开后文件名会自动添加 -debug 和 -min 后缀，debug 打开时 min 配置无效。当 rename 是函数的时候要返回 `{ prefix: '', suffix: '' }` 格式的对象，分别对应前缀和后缀。
 
 > 注意事项：_样式路径以 `/` 结尾会默认用 `index.css` 补全_， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。
