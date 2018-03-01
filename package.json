@@ -1,6 +1,6 @@
 {
   "name": "@nuintun/gulp-css",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A gulp plugin for cmd transport and concat",
   "author": {
     "name": "nuintun",
@@ -22,6 +22,7 @@
   },
   "keywords": ["gulp", "css", "concat", "transport", "gulpplugin"],
   "dependencies": {
+    "gulplog": "^1.0.0",
     "@nuintun/through": "^0.0.1",
     "@nuintun/duplexer": "^0.0.1",
     "@nuintun/css-deps": "^1.0.1",
