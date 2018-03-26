@@ -1,38 +1,56 @@
 /**
  * @module index
  * @license MIT
- * @version 2017/11/13
+ * @version 2018/03/26
  */
 
-'use strict';
-
-const utils = require('./lib/utils');
-const transform = require('./lib/transform');
-const bundle = require('./lib/bundle');
-const gutil = require('@nuintun/gulp-util');
-const duplexer = require('@nuintun/duplexer');
+import bundler from './lib/bundler';
+import * as utils from './lib/utils';
+import through from '@nuintun/through';
+import * as gutil from '@nuintun/gulp-util';
 
 /**
  * @function main
  * @param {Object} options
- * @returns {Duplexer}
  */
-function main(options) {
-  const input = transform(options);
-  const output = bundle();
-  const duplex = duplexer({ objectMode: true }, input, output);
+export default function main(options) {
+  options = utils.initOptions(options);
 
-  input.pipe(output);
+  const cache = options.cache;
+  const cacheable = options.combine;
 
-  return duplex;
+  // Stream
+  return through(
+    async function(vinyl, encoding, next) {
+      vinyl = gutil.VinylFile.wrap(vinyl);
+
+      // Throw error if stream vinyl
+      if (vinyl.isStream()) {
+        return next(new TypeError('Streaming not supported.'));
+      }
+
+      // Return empty vinyl
+      if (vinyl.isNull()) {
+        return next(null, vinyl);
+      }
+
+      // Next
+      try {
+        next(null, await bundler(vinyl, options));
+      } catch (error) {
+        next(error);
+      }
+    },
+    function(next) {
+      // Clear cache
+      cache.clear();
+
+      // Next
+      next();
+    }
+  );
 }
 
-main.cwd = gutil.cwd;
-main.debug = utils.debug;
+// Exports
 main.chalk = gutil.chalk;
-main.logger = utils.logger;
-
-/**
- * exports module
- */
-module.exports = main;
+main.logger = gutil.logger;

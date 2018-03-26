@@ -28,3 +28,9 @@ node_modules
 
 #WebStorm
 .idea
+
+# npm lock
+package-lock.json
+
+# tests dist
+tests/dist
