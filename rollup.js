@@ -22,8 +22,6 @@ async function build(inputOptions, outputOptions) {
 
   await bundle.write(outputOptions);
   console.log(`Build ${outputOptions.file} success!`);
-  await fs.copy('lib/builtins/loaders', 'dist/builtins/loaders');
-  console.log(`Build dist/builtins/loaders success!`);
 }
 
 const banner = `/**
