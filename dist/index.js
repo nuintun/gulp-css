@@ -73,25 +73,6 @@ function initOptions(options) {
   return Object.freeze(options);
 }
 
-/**
- * @function resolveDependencyId
- * @param {string} dependency
- * @param {string} resolved
- * @param {string} referer
- * @returns {string}
- */
-function resolveDependencyId(dependency, resolved, referer) {
-  // Convert absolute path to relative base path
-  if (gutil.isAbsolute(dependency)) {
-    dependency = path.relative(path.dirname(referer), resolved);
-  }
-
-  // Normalize
-  dependency = gutil.normalize(dependency);
-
-  return dependency;
-}
-
 // Promisify stat and readFile
 const fsReadStat = gutil.promisify(fs.stat);
 const fsReadFile = gutil.promisify(fs.readFile);
@@ -146,8 +127,17 @@ async function cssPackager(vinyl, options) {
   const dependencies = new Set();
   const combine = options.combine;
 
-  // Normalize onpath
-  const onpath = options.onpath ? (prop, value) => options.onpath(prop, value, referer) : null;
+  /**
+   * @function onpath
+   * @param {string} prop
+   * @param {string} value
+   */
+  const onpath = (prop, value) => {
+    value = gutil.isLocal(value) ? gutil.normalize(value) : value;
+
+    // Returned value
+    return options.onpath ? options.onpath(prop, value, referer) : value;
+  };
 
   // Parse module
   const meta = cssDeps(
@@ -168,6 +158,9 @@ async function cssPackager(vinyl, options) {
           );
         }
 
+        // Normalize
+        dependency = gutil.normalize(dependency);
+
         // Resolve dependency
         const resolved = resolve(dependency, referer, { root });
 
@@ -185,8 +178,6 @@ async function cssPackager(vinyl, options) {
           );
         }
 
-        // Convert absolute path to relative path
-        dependency = resolveDependencyId(dependency, resolved, referer);
         // Parse map
         dependency = gutil.parseMap(dependency, resolved, options.map);
         dependency = gutil.normalize(dependency);

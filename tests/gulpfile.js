@@ -9,9 +9,10 @@
 const gulp = require('gulp');
 const fs = require('fs-extra');
 const bundler = require('../dist/index');
-const relative = require('path').relative;
 const through = require('@nuintun/through');
+const { relative, join, dirname } = require('path');
 
+const root = process.cwd();
 const ARGV = process.argv.slice(2);
 
 /**
@@ -23,6 +24,31 @@ function hasArgv(argv) {
 }
 
 const combine = hasArgv('--combine');
+
+const map = (path, resolved) => {
+  if (!path.startsWith('/')) {
+    path = '/' + unixify(relative(root, path));
+  }
+
+  path = path.replace(/^\/assets/, '/dist');
+
+  return path;
+};
+
+const onpath = (prop, path, referer) => {
+  if (/^(?:[a-z0-9.+-]+:)?\/\/|^data:\w+?\/\w+?[,;]/i.test(path)) {
+    return path;
+  }
+
+  if (!path.startsWith('/')) {
+    path = join(dirname(referer), path);
+    path = '/' + unixify(relative(root, path));
+  }
+
+  path = path.replace(/^\/assets/, '/dist');
+
+  return path;
+};
 
 const plugins = [
   {
@@ -58,7 +84,7 @@ function build() {
         next(null, vinyl);
       })
     )
-    .pipe(bundler({ combine, plugins }))
+    .pipe(bundler({ map, combine, onpath, plugins }))
     .pipe(gulp.dest('dist'));
 }
 

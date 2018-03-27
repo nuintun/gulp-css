@@ -43,5 +43,5 @@ textarea {
   background: #ffffcd;
   border: 1px solid #ccc;
   box-shadow: 2px 2px 3px #ededed inset;
-  background: url(/assets/a.gif);
+  background: url(../images/loading.gif);
 }
