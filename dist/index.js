@@ -83,7 +83,7 @@ function initOptions(options) {
 function resolveDependencyId(dependency, resolved, referer) {
   // Convert absolute path to relative base path
   if (gutil.isAbsolute(dependency)) {
-    dependency = path.relative(referer, resolved);
+    dependency = path.relative(path.dirname(referer), resolved);
   }
 
   // Normalize
