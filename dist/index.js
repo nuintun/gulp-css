@@ -187,6 +187,9 @@ async function cssPackager(vinyl, options) {
 
         // Convert absolute path to relative path
         dependency = resolveDependencyId(dependency, resolved, referer);
+        // Parse map
+        dependency = gutil.parseMap(dependency, resolved, options.map);
+        dependency = gutil.normalize(dependency);
       } else {
         // Relative file path from cwd
         const rpath = JSON.stringify(gutil.path2cwd(referer));
