@@ -20,7 +20,13 @@
   },
   "license": "MIT",
   "main": "dist/index",
-  "keywords": ["gulp", "css", "concat", "transport", "gulpplugin"],
+  "keywords": [
+    "gulp",
+    "css",
+    "concat",
+    "transport",
+    "gulpplugin"
+  ],
   "dependencies": {
     "@nuintun/bundler": "^0.2.0",
     "@nuintun/through": "^1.0.0",

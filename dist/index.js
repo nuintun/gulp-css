@@ -133,7 +133,7 @@ async function cssPackager(vinyl, options) {
    * @param {string} value
    */
   const onpath = (prop, value) => {
-    value = gutil.isLocal(value) ? gutil.normalize(value) : value;
+    value = gutil.isUrl(value) ? value : gutil.normalize(value);
 
     // Returned value
     return options.onpath ? options.onpath(prop, value, referer) : value;
@@ -143,7 +143,16 @@ async function cssPackager(vinyl, options) {
   const meta = cssDeps(
     vinyl.contents,
     (dependency, media) => {
-      if (gutil.isLocal(dependency)) {
+      if (gutil.isUrl(dependency)) {
+        // Relative file path from cwd
+        const rpath = JSON.stringify(gutil.path2cwd(referer));
+
+        // Output warn
+        gutil.logger.warn(
+          gutil.chalk.yellow(`Found remote css file ${JSON.stringify(dependency)} at ${rpath}, unsupported.`),
+          '\x07'
+        );
+      } else {
         if (media.length) {
           // Get media
           media = JSON.stringify(media.join(', '));
@@ -181,15 +190,6 @@ async function cssPackager(vinyl, options) {
         // Parse map
         dependency = gutil.parseMap(dependency, resolved, options.map);
         dependency = gutil.normalize(dependency);
-      } else {
-        // Relative file path from cwd
-        const rpath = JSON.stringify(gutil.path2cwd(referer));
-
-        // Output warn
-        gutil.logger.warn(
-          gutil.chalk.yellow(`Found remote css file ${JSON.stringify(dependency)} at ${rpath}, unsupported.`),
-          '\x07'
-        );
       }
 
       return combine ? false : dependency;
@@ -249,23 +249,6 @@ async function parse(vinyl, options) {
 }
 
 /**
- * @function combine
- * @param {Set} bundles
- * @returns {Buffer}
- */
-function combine(bundles) {
-  const contents = [];
-
-  // Traverse bundles
-  bundles.forEach(bundle => {
-    contents.push(bundle.contents);
-  });
-
-  // Concat contents
-  return Buffer.concat(contents);
-}
-
-/**
  * @function bundler
  * @param {Vinyl} vinyl
  * @param {Object} options
@@ -319,7 +302,7 @@ async function bundler(vinyl, options) {
   });
 
   // Combine files
-  vinyl.contents = combine(bundles);
+  vinyl.contents = gutil.combine(bundles);
 
   return vinyl;
 }
