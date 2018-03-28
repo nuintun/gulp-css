@@ -2,19 +2,16 @@
 
 > A gulp plugin for css transport and concat
 >
+> [![NPM Version][npm-image]][npm-url]
+> [![Download Status][download-image]][npm-url]
 > [![Dependencies][david-image]][david-url]
-
-[david-image]: http://img.shields.io/david/nuintun/gulp-css.svg?style=flat-square
-[david-url]: https://david-dm.org/nuintun/gulp-css
 
 ### Usage
 
 ```js
-var path = require('path');
-var join = path.join;
-var relative = path.relative;
-var gulp = require('gulp');
-var css = require('@nuintun/gulp-css');
+const gulp = require('gulp');
+const css = require('@nuintun/gulp-css');
+const { join, relative } = require('path');
 
 // Fixed css resource path
 function onpath(path, property, file, wwwroot) {
@@ -22,7 +19,7 @@ function onpath(path, property, file, wwwroot) {
     path = './' + path;
   }
 
-  if (path.indexOf('.') === 0) {
+  if (path.startsWith('.')) {
     path = join(dirname(file), path);
     path = relative(wwwroot, path);
     path = '/' + path;
@@ -74,3 +71,9 @@ gulp.task('default', function() {
   网站根目录配置，路径相对于 `process.cwd()` 目录。
 
 > 注意事项：_样式路径以 `/` 结尾会默认用 `index.css` 补全_， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。
+
+[npm-image]: http://img.shields.io/npm/v/gulp-css.svg?style=flat-square
+[npm-url]: https://www.npmjs.org/package/gulp-css
+[download-image]: http://img.shields.io/npm/dm/gulp-css.svg?style=flat-square
+[david-image]: http://img.shields.io/david/nuintun/gulp-css.svg?style=flat-square
+[david-url]: https://david-dm.org/nuintun/gulp-css
