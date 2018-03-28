@@ -2,7 +2,7 @@
  * @module @nuintun/gulp-css
  * @author nuintun
  * @license MIT
- * @version 0.1.0
+ * @version 0.2.0
  * @description A gulp plugin for cmd transport and concat
  * @see https://nuintun.github.io/gulp-css
  */
@@ -232,9 +232,11 @@ async function parse(vinyl, options) {
   if (packager) {
     const cacheable = options.combine;
     const meta = await packager(vinyl, options);
+
+    // Get props
+    const path$$1 = meta.path;
     const dependencies = cacheable ? meta.dependencies : new Set();
     const contents = meta.contents;
-    const path$$1 = meta.path;
 
     return { path: path$$1, dependencies, contents };
   }
