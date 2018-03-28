@@ -23,7 +23,7 @@
   "keywords": ["gulp", "css", "concat", "transport", "gulpplugin"],
   "dependencies": {
     "@nuintun/bundler": "^0.1.2",
-    "@nuintun/through": "^0.3.0",
+    "@nuintun/through": "^1.0.0",
     "@nuintun/css-deps": "https://github.com/nuintun/css-deps/archive/dev.tar.gz",
     "@nuintun/gulp-util": "https://github.com/nuintun/gulp-util/archive/dev.tar.gz"
   },
