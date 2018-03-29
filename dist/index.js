@@ -58,7 +58,7 @@ function initOptions(options) {
   options = gutil.inspectAttrs(options, {
     root: { type: String, default: cwd },
     plugins: { type: Array, default: [] },
-    combine: { type: Boolean, default: true },
+    combine: { type: Boolean, default: false },
     map: { type: [null, Function], default: null },
     onpath: { type: [null, Function], default: null }
   });
