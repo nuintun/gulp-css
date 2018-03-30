@@ -26,13 +26,7 @@ function hasArgv(argv) {
 const combine = hasArgv('--combine');
 
 const map = (path, resolved) => {
-  if (!path.startsWith('/')) {
-    path = '/' + unixify(relative(root, path));
-  }
-
-  path = path.replace(/^\/assets/, '/dist');
-
-  return path;
+  return path.replace(/^\/assets\//, '/dist/');
 };
 
 const onpath = (prop, path, referer) => {
@@ -53,10 +47,10 @@ const onpath = (prop, path, referer) => {
 const plugins = [
   {
     name: 'Adam',
-    transform(path, contents, options) {
+    loaded(path, contents, options) {
       return contents;
     },
-    bundle(path, contents, options) {
+    parsed(path, contents, options) {
       return contents;
     }
   }

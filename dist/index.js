@@ -9,7 +9,6 @@
 
 'use strict';
 
-const fs = require('fs');
 const gutil = require('@nuintun/gulp-util');
 const path = require('path');
 const cssDeps = require('@nuintun/css-deps');
@@ -73,42 +72,6 @@ function initOptions(options) {
   return Object.freeze(options);
 }
 
-// Promisify stat and readFile
-const fsReadStat = gutil.promisify(fs.stat);
-const fsReadFile = gutil.promisify(fs.readFile);
-
-/**
- * @function fsSafeAccess
- * @param {string} path
- * @param {Number} mode
- * @returns {boolean}
- */
-function fsSafeAccess(path$$1, mode = fs.constants.R_OK) {
-  try {
-    fs.accessSync(path$$1, mode);
-  } catch (error) {
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * @function loadModule
- * @param {string} path
- * @param {Object} options
- * @returns {Vinyl}
- */
-async function loadModule(path$$1, options) {
-  // Read module
-  const base = options.base;
-  const stat = await fsReadStat(path$$1);
-  const contents = await fsReadFile(path$$1);
-
-  // Return a vinyl file
-  return new gutil.VinylFile({ base, path: path$$1, stat, contents });
-}
-
 /**
  * @module css
  * @license MIT
@@ -116,95 +79,100 @@ async function loadModule(path$$1, options) {
  */
 
 /**
- * @function cssPackager
- * @param {Vinyl} vinyl
- * @param {Object} options
- * @returns {Object}
+ * @namespace cssPackager
  */
-async function cssPackager(vinyl, options) {
-  const root = options.root;
-  const referer = vinyl.path;
-  const dependencies = new Set();
-  const combine = options.combine;
-
+const css = {
   /**
-   * @function onpath
-   * @param {string} prop
-   * @param {string} value
+   * @method parse
+   * @param {string} path
+   * @param {string} contents
+   * @param {Object} options
+   * @returns {Object}
    */
-  const onpath = (prop, value) => {
-    value = gutil.isUrl(value) ? value : gutil.normalize(value);
+  parse(path$$1, contents, options) {
+    const root = options.root;
+    const dependencies = new Set();
+    const combine = options.combine;
 
-    // Get onpath
-    const onpath = options.onpath;
+    /**
+     * @function onpath
+     * @param {string} prop
+     * @param {string} value
+     */
+    const onpath = (prop, value) => {
+      value = gutil.isUrl(value) ? value : gutil.normalize(value);
 
-    // Returned value
-    return onpath ? onpath(prop, value, referer) : value;
-  };
+      // Get onpath
+      const onpath = options.onpath;
 
-  // Parse module
-  const meta = cssDeps(
-    vinyl.contents,
-    (dependency, media) => {
-      if (gutil.isUrl(dependency)) {
-        // Relative file path from cwd
-        const rpath = JSON.stringify(gutil.path2cwd(referer));
+      // Returned value
+      return onpath ? onpath(prop, value, path$$1) : value;
+    };
 
-        // Output warn
-        gutil.logger.warn(
-          gutil.chalk.yellow(`Found remote css file ${JSON.stringify(dependency)} at ${rpath}, unsupported.`),
-          '\x07'
-        );
-      } else {
-        if (media.length) {
-          // Get media
-          media = JSON.stringify(media.join(', '));
-
+    // Parse module
+    const meta = cssDeps(
+      contents,
+      (dependency, media) => {
+        if (gutil.isUrl(dependency)) {
           // Relative file path from cwd
-          const rpath = JSON.stringify(gutil.path2cwd(referer));
+          const rpath = JSON.stringify(gutil.path2cwd(path$$1));
 
           // Output warn
           gutil.logger.warn(
-            gutil.chalk.yellow(`Found import media queries ${media} at ${rpath}, unsupported.`),
+            gutil.chalk.yellow(`Found remote css file ${JSON.stringify(dependency)} at ${rpath}, unsupported.`),
             '\x07'
           );
-        }
-
-        // Normalize
-        dependency = gutil.normalize(dependency);
-
-        // Resolve dependency
-        const resolved = resolve(dependency, referer, { root });
-
-        // Module can read
-        if (fsSafeAccess(resolved)) {
-          dependencies.add(resolved);
         } else {
-          // Relative file path from cwd
-          const rpath = JSON.stringify(gutil.path2cwd(referer));
+          if (media.length) {
+            // Get media
+            media = JSON.stringify(media.join(', '));
 
-          // Output warn
-          gutil.logger.warn(
-            gutil.chalk.yellow(`Module ${JSON.stringify(dependency)} at ${rpath} can't be found.`),
-            '\x07'
-          );
+            // Relative file path from cwd
+            const rpath = JSON.stringify(gutil.path2cwd(path$$1));
+
+            // Output warn
+            gutil.logger.warn(
+              gutil.chalk.yellow(`Found import media queries ${media} at ${rpath}, unsupported.`),
+              '\x07'
+            );
+          }
+
+          // Normalize
+          dependency = gutil.normalize(dependency);
+
+          // Resolve dependency
+          const resolved = resolve(dependency, path$$1, { root });
+
+          // Module can read
+          if (gutil.fsSafeAccess(resolved)) {
+            dependencies.add(resolved);
+          } else {
+            // Relative file path from cwd
+            const rpath = JSON.stringify(gutil.path2cwd(path$$1));
+
+            // Output warn
+            gutil.logger.warn(
+              gutil.chalk.yellow(`Module ${JSON.stringify(dependency)} at ${rpath} can't be found.`),
+              '\x07'
+            );
+          }
+
+          // Parse map
+          dependency = gutil.parseMap(dependency, resolved, options.map);
+          dependency = gutil.normalize(dependency);
         }
 
-        // Parse map
-        dependency = gutil.parseMap(dependency, resolved, options.map);
-        dependency = gutil.normalize(dependency);
-      }
+        return combine ? false : dependency;
+      },
+      { onpath, media: true }
+    );
 
-      return combine ? false : dependency;
-    },
-    { onpath, media: true }
-  );
+    // Get contents
+    contents = meta.code;
 
-  const path$$1 = referer;
-  const contents = gutil.buffer(meta.code);
-
-  return { path: path$$1, dependencies, contents };
-}
+    return { dependencies, contents };
+  }
+};
 
 /**
  * @module index
@@ -213,43 +181,64 @@ async function cssPackager(vinyl, options) {
  */
 
 const packagers = /*#__PURE__*/(Object.freeze || Object)({
-  css: cssPackager
+  css: css
 });
+
+/**
+ * @module parser
+ * @license MIT
+ * @version 2018/03/30
+ */
+
+/**
+ * @function parser
+ * @param {Vinyl} vinyl
+ * @param {Object} options
+ * @returns {Object}
+ */
+async function parser(vinyl, options) {
+  let path$$1 = vinyl.path;
+  let dependencies = new Set();
+  let contents = vinyl.contents;
+
+  const ext = vinyl.extname.slice(1).toLowerCase();
+  const packager = packagers[ext];
+
+  if (packager) {
+    const root = options.root;
+    const plugins = options.plugins;
+    const cacheable = options.combine;
+
+    // Get code
+    contents = contents.toString();
+
+    // Execute load hook
+    contents = await gutil.pipeline(plugins, 'loaded', path$$1, contents, { root });
+
+    // Parse metadata
+    const meta = await packager.parse(path$$1, contents, options);
+
+    // Override contents
+    contents = meta.contents;
+
+    // Execute transform hook
+    contents = await gutil.pipeline(plugins, 'parsed', path$$1, contents, { root });
+
+    // Override dependencies
+    if (cacheable) dependencies = meta.dependencies;
+
+    // To buffer
+    contents = gutil.buffer(contents);
+  }
+
+  return { path: path$$1, dependencies, contents };
+}
 
 /**
  * @module bundler
  * @license MIT
  * @version 2018/03/26
  */
-
-/**
- * @function parse
- * @param {Vinyl} vinyl
- * @param {Object} options
- * @returns {Object}
- */
-async function parse(vinyl, options) {
-  const ext = vinyl.extname.slice(1);
-  const packager = packagers[ext.toLowerCase()];
-
-  if (packager) {
-    const cacheable = options.combine;
-    const meta = await packager(vinyl, options);
-
-    // Get props
-    const path$$1 = meta.path;
-    const dependencies = cacheable ? meta.dependencies : new Set();
-    const contents = meta.contents;
-
-    return { path: path$$1, dependencies, contents };
-  }
-
-  return {
-    path: vinyl.path,
-    dependencies: new Set(),
-    contents: vinyl.contents
-  };
-}
 
 /**
  * @function bundler
@@ -272,35 +261,25 @@ async function bundler(vinyl, options) {
     parse: async path$$1 => {
       let meta;
       // Is entry file
-      const isEntryFile = input === path$$1;
+      const entry = input === path$$1;
 
       // Hit cache
       if (cacheable && cache.has(path$$1)) {
         meta = cache.get(path$$1);
       } else {
-        const file = isEntryFile ? vinyl : await loadModule(path$$1, options);
+        const file = entry ? vinyl : await gutil.fetchModule(path$$1, options);
 
-        // Execute transform hook
-        file.contents = await gutil.pipeline(plugins, 'transform', file.path, file.contents, { root, base });
-
-        // Execute parse
-        meta = await parse(file, options);
-
-        // Execute bundle hook
-        meta.contents = await gutil.pipeline(plugins, 'bundle', meta.path, meta.contents, { root, base });
+        // Execute parser
+        meta = await parser(file, options);
       }
 
+      // If is entry file override file path
+      if (entry) vinyl.path = meta.path;
       // Set cache if combine is true
       if (cacheable) cache.set(path$$1, meta);
-      // If is entry file override file path
-      if (isEntryFile) vinyl.path = meta.path;
-
-      // Get dependencies and contents
-      const dependencies = meta.dependencies;
-      const contents = meta.contents;
 
       // Return meta
-      return { dependencies, contents };
+      return meta;
     }
   });
 
