@@ -135,8 +135,11 @@ async function cssPackager(vinyl, options) {
   const onpath = (prop, value) => {
     value = gutil.isUrl(value) ? value : gutil.normalize(value);
 
+    // Get onpath
+    const onpath = options.onpath;
+
     // Returned value
-    return options.onpath ? options.onpath(prop, value, referer) : value;
+    return onpath ? onpath(prop, value, referer) : value;
   };
 
   // Parse module
