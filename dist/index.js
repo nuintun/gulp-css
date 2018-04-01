@@ -67,8 +67,6 @@ function initOptions(options) {
 
   // Init files cache
   options.cache = new Map();
-  // Init map cache
-  options.mapped = new Map();
 
   // Freeze
   return Object.freeze(options);
@@ -160,7 +158,7 @@ const css = {
           }
 
           // Parse map
-          dependency = gutil.parseMap(dependency, resolved, options.map, options.mapped);
+          dependency = gutil.parseMap(dependency, resolved, options.map);
           dependency = gutil.normalize(dependency);
         }
 
@@ -332,7 +330,6 @@ function main(options) {
     function(next) {
       // Clear cache
       options.cache.clear();
-      options.mapped.clear();
 
       // Next
       next();

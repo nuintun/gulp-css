@@ -44,7 +44,6 @@ export default function main(options) {
     function(next) {
       // Clear cache
       options.cache.clear();
-      options.mapped.clear();
 
       // Next
       next();
