@@ -65,7 +65,7 @@ function initOptions(options) {
   // Init root and base
   options.root = path.resolve(options.root);
 
-  // Init cache
+  // Init files cache
   options.cache = new Map();
 
   // Freeze
@@ -302,9 +302,6 @@ async function bundler(vinyl, options) {
 function main(options) {
   options = initOptions(options);
 
-  const cache = options.cache;
-  const cacheable = options.combine;
-
   // Stream
   return through(
     async function(vinyl, encoding, next) {
@@ -332,7 +329,7 @@ function main(options) {
     },
     function(next) {
       // Clear cache
-      cache.clear();
+      options.cache.clear();
 
       // Next
       next();

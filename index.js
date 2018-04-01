@@ -16,9 +16,6 @@ import * as gutil from '@nuintun/gulp-util';
 export default function main(options) {
   options = utils.initOptions(options);
 
-  const cache = options.cache;
-  const cacheable = options.combine;
-
   // Stream
   return through(
     async function(vinyl, encoding, next) {
@@ -46,7 +43,7 @@ export default function main(options) {
     },
     function(next) {
       // Clear cache
-      cache.clear();
+      options.cache.clear();
 
       // Next
       next();
