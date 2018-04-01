@@ -213,7 +213,6 @@ async function parser(vinyl, options) {
   if (packager) {
     const root = options.root;
     const plugins = options.plugins;
-    const combine = options.combine;
 
     // Get code
     contents = contents.toString();
@@ -231,7 +230,7 @@ async function parser(vinyl, options) {
     contents = await gutil.pipeline(plugins, 'parsed', path$$1, contents, { root });
 
     // Override dependencies
-    if (combine(path$$1)) dependencies = meta.dependencies;
+    dependencies = meta.dependencies;
 
     // To buffer
     contents = gutil.buffer(contents);
@@ -259,6 +258,8 @@ async function bundler(vinyl, options) {
   const cache = options.cache;
   const plugins = options.plugins;
 
+  const combine = options.combine(vinyl.path);
+
   // Bundler
   const bundles = await new Bundler({
     input,
@@ -281,11 +282,18 @@ async function bundler(vinyl, options) {
         cache.set(path$$1, meta);
       }
 
+      // Override path
+      path$$1 = meta.path;
+
+      // Get meta
+      const dependencies = combine ? meta.dependencies : new Set();
+      const contents = meta.contents;
+
       // If is entry file override file path
-      if (entry) vinyl.path = meta.path;
+      if (entry) vinyl.path = path$$1;
 
       // Return meta
-      return meta;
+      return { path: path$$1, dependencies, contents };
     }
   });
 
