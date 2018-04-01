@@ -33,9 +33,9 @@ function resolve(request, referer, options) {
   const root = options.root;
 
   if (gutil.isAbsolute(request)) {
-    request = path.join(root, request);
+    request = path.resolve(root, request);
   } else {
-    request = path.join(path.dirname(referer), request);
+    request = path.resolve(path.dirname(referer), request);
 
     if (gutil.isOutBounds(request, root)) {
       throw new RangeError(`File ${gutil.normalize(request)} is out of bounds of root.`);
@@ -67,6 +67,8 @@ function initOptions(options) {
 
   // Init files cache
   options.cache = new Map();
+  // Init map cache
+  options.mapped = new Map();
 
   // Freeze
   return Object.freeze(options);
@@ -158,7 +160,7 @@ const css = {
           }
 
           // Parse map
-          dependency = gutil.parseMap(dependency, resolved, options.map);
+          dependency = gutil.parseMap(dependency, resolved, options.map, options.mapped);
           dependency = gutil.normalize(dependency);
         }
 
@@ -330,6 +332,7 @@ function main(options) {
     function(next) {
       // Clear cache
       options.cache.clear();
+      options.mapped.clear();
 
       // Next
       next();
