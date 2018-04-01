@@ -33,9 +33,9 @@ function resolve(request, referer, options) {
   const root = options.root;
 
   if (gutil.isAbsolute(request)) {
-    request = path.resolve(root, request);
+    request = path.join(root, request);
   } else {
-    request = path.resolve(path.dirname(referer), request);
+    request = path.join(path.dirname(referer), request);
 
     if (gutil.isOutBounds(request, root)) {
       throw new RangeError(`File ${gutil.normalize(request)} is out of bounds of root.`);
@@ -70,7 +70,7 @@ function initOptions(options) {
 
   // Init combine
   const combine = options.combine;
-  const fnCombine = gutil.typpy(combine);
+  const fnCombine = gutil.typpy(combine, Function);
 
   options.combine = module => (fnCombine ? combine(module) : combine);
 
