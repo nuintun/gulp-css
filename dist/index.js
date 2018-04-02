@@ -258,7 +258,8 @@ async function bundler(vinyl, options) {
   const cache = options.cache;
   const plugins = options.plugins;
 
-  const combine = options.combine(vinyl.path);
+  // Is combine
+  const combine = options.combine(input);
 
   // Bundler
   const bundles = await new Bundler({
