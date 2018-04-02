@@ -233,7 +233,7 @@ async function parser(vinyl, options) {
     dependencies = meta.dependencies;
 
     // To buffer
-    contents = gutil.buffer(contents);
+    contents = Buffer.from(contents);
   }
 
   return { path: path$$1, dependencies, contents };
