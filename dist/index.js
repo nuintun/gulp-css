@@ -57,8 +57,9 @@ function initOptions(options) {
   options = gutil.inspectAttrs(options, {
     root: { type: String, default: cwd },
     plugins: { type: Array, default: [] },
-    map: { type: [null, Function], default: null },
-    onpath: { type: [null, Function], default: null },
+    map: { type: Function, default: null },
+    onpath: { type: Function, default: null },
+    onbundle: { type: Function, default: null },
     combine: { type: [Boolean, Function], default: false }
   });
 
@@ -297,6 +298,9 @@ async function bundler(vinyl, options) {
       return { path: path$$1, dependencies, contents };
     }
   });
+
+  // Exec onbundle
+  options.onbundle && options.onbundle(input, bundles);
 
   // Combine files
   vinyl.contents = gutil.combine(bundles);
