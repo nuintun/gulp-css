@@ -8,7 +8,7 @@
 
 const gulp = require('gulp');
 const fs = require('fs-extra');
-const bundler = require('../dist/index');
+const bundler = require('../index');
 const through = require('@nuintun/through');
 const { relative, join, dirname } = require('path');
 
