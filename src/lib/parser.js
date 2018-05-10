@@ -30,7 +30,7 @@ export default async function parser(vinyl, options) {
     contents = contents.toString();
 
     // Execute load hook
-    contents = await gutil.pipeline(plugins, 'loaded', path, contents, { root });
+    contents = await gutil.pipeline(plugins, 'load', path, contents, { root });
 
     // Parse metadata
     const meta = await packager.parse(path, contents, options);
@@ -39,7 +39,7 @@ export default async function parser(vinyl, options) {
     contents = meta.contents;
 
     // Execute transform hook
-    contents = await gutil.pipeline(plugins, 'parsed', path, contents, { root });
+    contents = await gutil.pipeline(plugins, 'bundle', path, contents, { root });
 
     // Override dependencies
     dependencies = meta.dependencies;

@@ -72,8 +72,8 @@ gulp.task('default', function() {
 
 > 注意事项：_样式路径以 `/` 结尾会默认用 `index.css` 补全_， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。
 
-[npm-image]: http://img.shields.io/npm/v/gulp-css.svg?style=flat-square
-[npm-url]: https://www.npmjs.org/package/gulp-css
-[download-image]: http://img.shields.io/npm/dm/gulp-css.svg?style=flat-square
+[npm-image]: http://img.shields.io/npm/v/@nuintun/gulp-css.svg?style=flat-square
+[npm-url]: https://www.npmjs.org/package/@nuintun/gulp-css
+[download-image]: http://img.shields.io/npm/dm/@nuintun/gulp-css.svg?style=flat-square
 [david-image]: http://img.shields.io/david/nuintun/gulp-css.svg?style=flat-square
 [david-url]: https://david-dm.org/nuintun/gulp-css
