@@ -16,6 +16,17 @@ const Bundler = require('@nuintun/bundler');
 const through = require('@nuintun/through');
 
 /**
+ * @module lifecycle
+ * @license MIT
+ * @version 2018/07/03
+ */
+
+const lifecycle = {
+  LOAD: 'load',
+  BUNDLE: 'bundle'
+};
+
+/**
  * @module utils
  * @license MIT
  * @version 2018/03/26
@@ -187,7 +198,7 @@ const css = {
  * @version 2018/03/26
  */
 
-const packagers = /*#__PURE__*/(Object.freeze || Object)({
+const packagers = /*#__PURE__*/Object.freeze({
   css: css
 });
 
@@ -219,7 +230,7 @@ async function parser(vinyl, options) {
     contents = contents.toString();
 
     // Execute load hook
-    contents = await gutil.pipeline(plugins, 'load', path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.LOAD, path$$1, contents, { root });
 
     // Parse metadata
     const meta = await packager.parse(path$$1, contents, options);
@@ -228,7 +239,7 @@ async function parser(vinyl, options) {
     contents = meta.contents;
 
     // Execute transform hook
-    contents = await gutil.pipeline(plugins, 'bundle', path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.BUNDLE, path$$1, contents, { root });
 
     // Override dependencies
     dependencies = meta.dependencies;

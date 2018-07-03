@@ -18,7 +18,13 @@
   },
   "license": "MIT",
   "main": "index.js",
-  "keywords": ["gulp", "css", "concat", "transport", "gulpplugin"],
+  "keywords": [
+    "gulp",
+    "css",
+    "concat",
+    "transport",
+    "gulpplugin"
+  ],
   "dependencies": {
     "@nuintun/bundler": "^0.3.3",
     "@nuintun/through": "^1.0.3",
@@ -27,7 +33,7 @@
   },
   "devDependencies": {
     "gulp": "next",
-    "rollup": "^0.59.4",
+    "rollup": "^0.62.0",
     "fs-extra": "^6.0.1"
   },
   "scripts": {
