@@ -198,7 +198,7 @@ const css = {
  * @version 2018/03/26
  */
 
-const packagers = /*#__PURE__*/(Object.freeze || Object)({
+const packagers = /*#__PURE__*/Object.freeze({
   css: css
 });
 

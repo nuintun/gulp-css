@@ -26,15 +26,15 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "@nuintun/bundler": "^0.3.4",
-    "@nuintun/through": "^1.0.3",
+    "@nuintun/bundler": "^0.3.5",
+    "@nuintun/through": "^1.1.0",
     "@nuintun/css-deps": "https://github.com/nuintun/css-deps/archive/dev.tar.gz",
     "@nuintun/gulp-util": "https://github.com/nuintun/gulp-util/archive/dev.tar.gz"
   },
   "devDependencies": {
     "gulp": "next",
-    "rollup": "^0.62.0",
-    "fs-extra": "^6.0.1"
+    "rollup": "^0.63.4",
+    "fs-extra": "^7.0.0"
   },
   "scripts": {
     "prepublishOnly": "node rollup.js"
