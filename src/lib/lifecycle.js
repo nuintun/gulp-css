@@ -5,6 +5,7 @@
  */
 
 export default {
-  LOAD: 'load',
-  BUNDLE: 'bundle'
+  moduleDidLoad: 'moduleDidLoad',
+  moduleDidParse: 'moduleDidParse',
+  moduleWillBundle: 'moduleWillBundle'
 };

@@ -47,10 +47,13 @@ const onpath = (prop, path, referer) => {
 const plugins = [
   {
     name: 'Adam',
-    loaded(path, contents, options) {
+    moduleDidLoad(path, contents, options) {
       return contents;
     },
-    parsed(path, contents, options) {
+    moduleDidParse(path, contents, options) {
+      return contents;
+    },
+    moduleWillBundle(path, contents, options) {
       return contents;
     }
   }

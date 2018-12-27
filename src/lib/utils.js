@@ -5,6 +5,7 @@
  */
 
 import * as gutil from '@nuintun/gulp-util';
+import optionsSchemas from '../schemas/options';
 import { resolve as pResolve, join, dirname } from 'path';
 
 /**
@@ -37,17 +38,8 @@ export function resolve(request, referer, options) {
  * @returns {Object}
  */
 export function initOptions(options) {
-  const cwd = process.cwd();
-
   // Init attrs
-  options = gutil.inspectAttrs(options, {
-    root: { type: String, default: cwd },
-    plugins: { type: Array, default: [] },
-    map: { type: Function, default: null },
-    onpath: { type: Function, default: null },
-    onbundle: { type: Function, default: null },
-    combine: { type: [Boolean, Function], default: false }
-  });
+  gutil.validateOptions(optionsSchemas, options, 'gulp-css');
 
   // Init root and base
   options.root = pResolve(options.root);

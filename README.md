@@ -46,31 +46,29 @@ gulp.task('default', function() {
 
 ##### _options_
 
-* map `Function`
+- root `String`
+
+  网站根目录。
+
+- map `Function`
 
   配置模块 `ID` 映射（返回的映射字符串必须符合文件路径规则，会同步更新模块 `ID` 和 输出文件名）。
 
-* include `Boolean`
+- combine `Boolean`
 
   是否合并引入的样式文件。
 
-* prefix `String|Function`
+- onpath `Function`
 
-  对样式文件中的类名添加前缀类名。
+  样式文件中的资源文件路径处理回调函数。
 
-* onpath `Function`
+- onbundle `Function`
 
-  样式文件中的资源文件路径处理回调。
+  模块合并完成后回调函数。
 
-* cache `Boolean`
+- plugins `Array[Object]`
 
-  文件内存缓存，转换完成的文件会暂时存储在内存中以便提升转换效率。
-
-* wwwroot `String`
-
-  网站根目录配置，路径相对于 `process.cwd()` 目录。
-
-> 注意事项：_样式路径以 `/` 结尾会默认用 `index.css` 补全_， 样式 import 规则和原生一致，需要注意的是尽量不要引入远程资源。
+  自定义插件，有 `moduleDidLoad, moduleDidParse, moduleWillBundle` 三个生命周期提供调用处理。
 
 [npm-image]: http://img.shields.io/npm/v/@nuintun/gulp-css.svg?style=flat-square
 [npm-url]: https://www.npmjs.org/package/@nuintun/gulp-css

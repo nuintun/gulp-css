@@ -22,8 +22,69 @@ const through = require('@nuintun/through');
  */
 
 const lifecycle = {
-  LOAD: 'load',
-  BUNDLE: 'bundle'
+  moduleDidLoad: 'moduleDidLoad',
+  moduleDidParse: 'moduleDidParse',
+  moduleWillBundle: 'moduleWillBundle'
+};
+
+const cwd = process.cwd();
+
+const optionsSchemas = {
+  title: 'gulp-css',
+  description: 'A gulp plugin for cmd transport and concat.',
+  type: 'object',
+  properties: {
+    root: {
+      type: 'string',
+      default: cwd
+    },
+    plugins: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string'
+          },
+          moduleDidLoad: {
+            instanceof: 'Function',
+            errorMessage: 'should be function'
+          },
+          moduleDidParse: {
+            instanceof: 'Function',
+            errorMessage: 'should be function'
+          },
+          moduleWillBundle: {
+            instanceof: 'Function',
+            errorMessage: 'should be function'
+          }
+        }
+      },
+      default: []
+    },
+    map: {
+      instanceof: 'Function'
+    },
+    onpath: {
+      instanceof: 'Function'
+    },
+    onbundle: {
+      instanceof: 'Function'
+    },
+    combine: {
+      oneOf: [
+        {
+          type: 'boolean'
+        },
+        {
+          instanceof: 'Function'
+        }
+      ],
+      default: false,
+      errorMessage: 'should be boolean or function'
+    }
+  },
+  additionalProperties: false
 };
 
 /**
@@ -62,17 +123,8 @@ function resolve(request, referer, options) {
  * @returns {Object}
  */
 function initOptions(options) {
-  const cwd = process.cwd();
-
   // Init attrs
-  options = gutil.inspectAttrs(options, {
-    root: { type: String, default: cwd },
-    plugins: { type: Array, default: [] },
-    map: { type: Function, default: null },
-    onpath: { type: Function, default: null },
-    onbundle: { type: Function, default: null },
-    combine: { type: [Boolean, Function], default: false }
-  });
+  gutil.validateOptions(optionsSchemas, options, 'gulp-css');
 
   // Init root and base
   options.root = path.resolve(options.root);
@@ -230,7 +282,7 @@ async function parser(vinyl, options) {
     contents = contents.toString();
 
     // Execute load hook
-    contents = await gutil.pipeline(plugins, lifecycle.LOAD, path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidLoad, path$$1, contents, { root });
 
     // Parse metadata
     const meta = await packager.parse(path$$1, contents, options);
@@ -238,11 +290,14 @@ async function parser(vinyl, options) {
     // Override contents
     contents = meta.contents;
 
-    // Execute transform hook
-    contents = await gutil.pipeline(plugins, lifecycle.BUNDLE, path$$1, contents, { root });
+    // Execute parse hook
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path$$1, contents, { root });
 
     // Override dependencies
     dependencies = meta.dependencies;
+
+    // Execute bundle hook
+    contents = await gutil.pipeline(plugins, lifecycle.moduleWillBundle, path$$1, contents, { root });
 
     // To buffer
     contents = Buffer.from(contents);
@@ -265,10 +320,7 @@ async function parser(vinyl, options) {
  */
 async function bundler(vinyl, options) {
   const input = vinyl.path;
-  const root = options.root;
-  const base = options.base;
   const cache = options.cache;
-  const plugins = options.plugins;
 
   // Is combine
   const combine = options.combine(input);
