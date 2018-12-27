@@ -287,15 +287,14 @@ async function parser(vinyl, options) {
     // Parse metadata
     const meta = await packager.parse(path$$1, contents, options);
 
+    // Override dependencies
+    dependencies = meta.dependencies;
+
     // Override contents
     contents = meta.contents.toString();
 
     // Execute parse hook
     contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path$$1, contents, { root });
-
-    // Override dependencies
-    dependencies = meta.dependencies;
-
     // Execute bundle hook
     contents = await gutil.pipeline(plugins, lifecycle.moduleWillBundle, path$$1, contents, { root });
 
