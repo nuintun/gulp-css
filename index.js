@@ -288,7 +288,7 @@ async function parser(vinyl, options) {
     const meta = await packager.parse(path$$1, contents, options);
 
     // Override contents
-    contents = meta.contents;
+    contents = meta.contents.toString();
 
     // Execute parse hook
     contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path$$1, contents, { root });
