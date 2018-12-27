@@ -9,6 +9,27 @@ export default {
       type: 'string',
       default: cwd
     },
+    map: {
+      instanceof: 'Function'
+    },
+    combine: {
+      oneOf: [
+        {
+          type: 'boolean'
+        },
+        {
+          instanceof: 'Function'
+        }
+      ],
+      default: false,
+      errorMessage: 'should be boolean or function'
+    },
+    onpath: {
+      instanceof: 'Function'
+    },
+    onbundle: {
+      instanceof: 'Function'
+    },
     plugins: {
       type: 'array',
       items: {
@@ -32,27 +53,6 @@ export default {
         }
       },
       default: []
-    },
-    map: {
-      instanceof: 'Function'
-    },
-    onpath: {
-      instanceof: 'Function'
-    },
-    onbundle: {
-      instanceof: 'Function'
-    },
-    combine: {
-      oneOf: [
-        {
-          type: 'boolean'
-        },
-        {
-          instanceof: 'Function'
-        }
-      ],
-      default: false,
-      errorMessage: 'should be boolean or function'
     }
   },
   additionalProperties: false
