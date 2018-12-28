@@ -29,7 +29,7 @@ export default async function parser(vinyl, options) {
     // Get code
     contents = contents.toString();
 
-    // Execute load hook
+    // Execute did load hook
     contents = await gutil.pipeline(plugins, lifecycle.moduleDidLoad, path, contents, { root });
 
     // Parse metadata
@@ -41,10 +41,10 @@ export default async function parser(vinyl, options) {
     // Override contents
     contents = meta.contents.toString();
 
-    // Execute parse hook
+    // Execute did parse hook
     contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path, contents, { root });
-    // Execute bundle hook
-    contents = await gutil.pipeline(plugins, lifecycle.moduleWillBundle, path, contents, { root });
+    // Execute did complete hook
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidComplete, path, contents, { root });
 
     // To buffer
     contents = Buffer.from(contents);

@@ -7,5 +7,5 @@
 export default {
   moduleDidLoad: 'moduleDidLoad',
   moduleDidParse: 'moduleDidParse',
-  moduleWillBundle: 'moduleWillBundle'
+  moduleDidComplete: 'moduleDidComplete'
 };
