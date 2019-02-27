@@ -159,7 +159,7 @@ const css = {
    * @param {Object} options
    * @returns {Object}
    */
-  parse(path$$1, contents, options) {
+  parse(path, contents, options) {
     const root = options.root;
     const dependencies = new Set();
     const combine = options.combine;
@@ -176,7 +176,7 @@ const css = {
       const onpath = options.onpath;
 
       // Returned value
-      return onpath ? onpath(prop, value, path$$1) : value;
+      return onpath ? onpath(prop, value, path) : value;
     };
 
     // Parse module
@@ -185,7 +185,7 @@ const css = {
       (dependency, media) => {
         if (gutil.isUrl(dependency)) {
           // Relative file path from cwd
-          const rpath = JSON.stringify(gutil.path2cwd(path$$1));
+          const rpath = JSON.stringify(gutil.path2cwd(path));
 
           // Output warn
           gutil.logger.warn(
@@ -198,7 +198,7 @@ const css = {
             media = JSON.stringify(media.join(', '));
 
             // Relative file path from cwd
-            const rpath = JSON.stringify(gutil.path2cwd(path$$1));
+            const rpath = JSON.stringify(gutil.path2cwd(path));
 
             // Output warn
             gutil.logger.warn(
@@ -211,14 +211,14 @@ const css = {
           dependency = gutil.normalize(dependency);
 
           // Resolve dependency
-          const resolved = resolve(dependency, path$$1, { root });
+          const resolved = resolve(dependency, path, { root });
 
           // Module can read
           if (gutil.fsSafeAccess(resolved)) {
             dependencies.add(resolved);
           } else {
             // Relative file path from cwd
-            const rpath = JSON.stringify(gutil.path2cwd(path$$1));
+            const rpath = JSON.stringify(gutil.path2cwd(path));
 
             // Output warn
             gutil.logger.warn(
@@ -232,7 +232,7 @@ const css = {
           dependency = gutil.normalize(dependency);
         }
 
-        return combine(path$$1) ? false : dependency;
+        return combine(path) ? false : dependency;
       },
       { onpath, media: true }
     );
@@ -267,7 +267,7 @@ const packagers = /*#__PURE__*/Object.freeze({
  * @returns {Object}
  */
 async function parser(vinyl, options) {
-  let path$$1 = vinyl.path;
+  let path = vinyl.path;
   let dependencies = new Set();
   let contents = vinyl.contents;
 
@@ -282,10 +282,10 @@ async function parser(vinyl, options) {
     contents = contents.toString();
 
     // Execute did load hook
-    contents = await gutil.pipeline(plugins, lifecycle.moduleDidLoad, path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidLoad, path, contents, { root });
 
     // Parse metadata
-    const meta = await packager.parse(path$$1, contents, options);
+    const meta = await packager.parse(path, contents, options);
 
     // Override dependencies
     dependencies = meta.dependencies;
@@ -294,15 +294,15 @@ async function parser(vinyl, options) {
     contents = meta.contents.toString();
 
     // Execute did parse hook
-    contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidParse, path, contents, { root });
     // Execute did complete hook
-    contents = await gutil.pipeline(plugins, lifecycle.moduleDidComplete, path$$1, contents, { root });
+    contents = await gutil.pipeline(plugins, lifecycle.moduleDidComplete, path, contents, { root });
 
     // To buffer
     contents = Buffer.from(contents);
   }
 
-  return { path: path$$1, dependencies, contents };
+  return { path, dependencies, contents };
 }
 
 /**
@@ -327,37 +327,37 @@ async function bundler(vinyl, options) {
   // Bundler
   const bundles = await new Bundler({
     input,
-    resolve: path$$1 => path$$1,
-    parse: async path$$1 => {
+    resolve: path => path,
+    parse: async path => {
       let meta;
       // Is entry file
-      const entry = input === path$$1;
+      const entry = input === path;
 
       // Hit cache
-      if (cache.has(path$$1)) {
-        meta = cache.get(path$$1);
+      if (cache.has(path)) {
+        meta = cache.get(path);
       } else {
-        const file = entry ? vinyl : await gutil.fetchModule(path$$1, options);
+        const file = entry ? vinyl : await gutil.fetchModule(path, options);
 
         // Execute parser
         meta = await parser(file, options);
 
         // Set cache
-        cache.set(path$$1, meta);
+        cache.set(path, meta);
       }
 
       // Override path
-      path$$1 = meta.path;
+      path = meta.path;
 
       // Get meta
       const dependencies = combine ? meta.dependencies : new Set();
       const contents = meta.contents;
 
       // If is entry file override file path
-      if (entry) vinyl.path = path$$1;
+      if (entry) vinyl.path = path;
 
       // Return meta
-      return { path: path$$1, dependencies, contents };
+      return { path, dependencies, contents };
     }
   });
 
