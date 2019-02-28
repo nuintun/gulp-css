@@ -68,7 +68,7 @@ gulp.task('default', function() {
 
 - plugins `Array[Object]`
 
-  自定义插件，有 `moduleDidLoad, moduleDidParse, moduleDidComplete` 三个生命周期提供调用处理。
+  自定义插件，有 `moduleDidLoad, moduleDidParse, moduleWillBundle` 三个生命周期提供调用处理。
 
 [npm-image]: http://img.shields.io/npm/v/@nuintun/gulp-css.svg?style=flat-square
 [npm-url]: https://www.npmjs.org/package/@nuintun/gulp-css
