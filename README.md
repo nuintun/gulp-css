@@ -54,9 +54,9 @@ gulp.task('default', function() {
 
   配置模块 `ID` 映射（返回的映射字符串必须符合文件路径规则，会同步更新模块 `ID` 和 输出文件名）。
 
-- combine `Boolean`
+- combine `Boolean|Function`
 
-  是否合并引入的样式文件。
+  是否合并样式。
 
 - onpath `Function`
 
@@ -68,7 +68,7 @@ gulp.task('default', function() {
 
 - plugins `Array[Object]`
 
-  自定义插件，有 `moduleDidLoad, moduleDidParse, moduleWillBundle` 三个生命周期提供调用处理。
+  自定义模块转换插件，有 `moduleDidLoad, moduleDidParse, moduleWillBundle` 三个生命周期提供调用处理。
 
 [npm-image]: http://img.shields.io/npm/v/@nuintun/gulp-css.svg?style=flat-square
 [npm-url]: https://www.npmjs.org/package/@nuintun/gulp-css
