@@ -2,7 +2,7 @@
  * @module @nuintun/gulp-css
  * @author nuintun
  * @license MIT
- * @version 0.2.0
+ * @version 1.0.0
  * @description A gulp plugin for cmd transport and concat.
  * @see https://github.com/nuintun/gulp-css#readme
  */
