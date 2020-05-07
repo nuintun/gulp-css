@@ -3,9 +3,9 @@
 
 
 "@nuintun/bundler@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@nuintun/bundler/-/bundler-1.0.1.tgz#c0bbbe7ffe28fcb25fbeb335f0d4c7d0787c5a04"
-  integrity sha512-Hq10a0g28TSNANbhzhLFFiAlY3qyXZkUbwo11lDEMF9PVYMmTTete2c1olKvZAv6TZW0O6TEmTIgzG8pOyc9tw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@nuintun/bundler/-/bundler-1.0.3.tgz#c8adfd2517c972ebcd8851f1cbb2460bba1dd753"
+  integrity sha512-V0wQB3nKJlKAwKaSoKZNVB+VIsic3hO+Ces4mrt9w731HmUfya+ueyzRMx8eDp13SQu09Wi0QCGFrE3DvwPJOw==
 
 "@nuintun/css-deps@^2.0.0":
   version "2.0.0"
