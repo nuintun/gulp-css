@@ -18,7 +18,7 @@ export default function main(options) {
 
   // Stream
   return through(
-    async function(vinyl, encoding, next) {
+    async function (vinyl, encoding, next) {
       vinyl = gutil.VinylFile.wrap(vinyl);
 
       // Throw error if stream vinyl
@@ -41,7 +41,7 @@ export default function main(options) {
       // Next
       next(null, vinyl);
     },
-    function(next) {
+    function (next) {
       // Clear cache
       options.cache.clear();
 

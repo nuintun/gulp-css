@@ -77,7 +77,7 @@ function build() {
     .src('assets/view/**/*.css', { base: 'assets' })
     .pipe(
       through((vinyl, enc, next) => {
-        bundler.logger('Building', bundler.chalk.green(unixify(vinyl.relative)));
+        bundler.logger.log('Building', bundler.chalk.green(unixify(vinyl.relative)));
         next(null, vinyl);
       })
     )

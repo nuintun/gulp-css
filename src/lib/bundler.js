@@ -9,6 +9,15 @@ import Bundler from '@nuintun/bundler';
 import * as gutil from '@nuintun/gulp-util';
 
 /**
+ * @function oncycle
+ * @param {string} path
+ * @param {string} referrer
+ */
+function oncycle(path, referrer) {
+  throw new ReferenceError(`Found circular dependency ${path} in ${referrer}`);
+}
+
+/**
  * @function bundler
  * @param {Vinyl} vinyl
  * @param {Object} options
@@ -23,7 +32,7 @@ export default async function bundler(vinyl, options) {
 
   // Bundler
   const bundles = await new Bundler({
-    input,
+    oncycle,
     resolve: path => path,
     parse: async path => {
       let meta;
@@ -47,8 +56,8 @@ export default async function bundler(vinyl, options) {
       path = meta.path;
 
       // Get meta
-      const dependencies = combine ? meta.dependencies : new Set();
       const contents = meta.contents;
+      const dependencies = combine ? Array.from(meta.dependencies) : [];
 
       // If is entry file override file path
       if (entry) vinyl.path = path;
@@ -56,7 +65,7 @@ export default async function bundler(vinyl, options) {
       // Return meta
       return { path, dependencies, contents };
     }
-  });
+  }).parse(input);
 
   // Exec onbundle
   options.onbundle && options.onbundle(input, bundles);

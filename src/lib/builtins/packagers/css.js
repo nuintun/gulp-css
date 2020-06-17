@@ -61,10 +61,7 @@ export default {
             const rpath = JSON.stringify(gutil.path2cwd(path));
 
             // Output warn
-            gutil.logger.warn(
-              gutil.chalk.yellow(`Found import media queries ${media} at ${rpath}, unsupported.`),
-              '\x07'
-            );
+            gutil.logger.warn(gutil.chalk.yellow(`Found import media queries ${media} at ${rpath}, unsupported.`), '\x07');
           }
 
           // Normalize
@@ -81,10 +78,7 @@ export default {
             const rpath = JSON.stringify(gutil.path2cwd(path));
 
             // Output warn
-            gutil.logger.warn(
-              gutil.chalk.yellow(`Module ${JSON.stringify(dependency)} at ${rpath} can't be found.`),
-              '\x07'
-            );
+            gutil.logger.warn(gutil.chalk.yellow(`Module ${JSON.stringify(dependency)} at ${rpath} can't be found.`), '\x07');
           }
 
           // Parse map
