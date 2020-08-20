@@ -5,7 +5,7 @@
  */
 
 export default {
-  moduleDidLoad: 'moduleDidLoad',
-  moduleDidParse: 'moduleDidParse',
-  moduleDidComplete: 'moduleDidComplete'
+  moduleDidLoaded: 'moduleDidLoaded',
+  moduleDidParsed: 'moduleDidParsed',
+  moduleDidCompleted: 'moduleDidCompleted'
 };
