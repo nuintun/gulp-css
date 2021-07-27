@@ -25,11 +25,11 @@ function hasArgv(argv) {
 
 const combine = hasArgv('--combine');
 
-const map = (path, resolved) => {
+const map = (path, _resolved) => {
   return path.replace(/^\/assets\//, '/dist/');
 };
 
-const onpath = (prop, path, referer) => {
+const onpath = (_prop, path, referer) => {
   if (/^(?:[a-z0-9.+-]+:)?\/\/|^data:\w+?\/\w+?[,;]/i.test(path)) {
     return path;
   }
@@ -47,13 +47,19 @@ const onpath = (prop, path, referer) => {
 const plugins = [
   {
     name: 'Adam',
-    moduleDidLoad(path, contents, options) {
+    moduleDidLoaded(_path, contents, _options) {
+      bundler.logger.log('[hook]', bundler.chalk.cyan('moduleDidLoaded'));
+
       return contents;
     },
-    moduleDidParse(path, contents, options) {
+    moduleDidParsed(_path, contents, _options) {
+      bundler.logger.log('[hook]', bundler.chalk.cyan('moduleDidParsed'));
+
       return contents;
     },
-    moduleWillBundle(path, contents, options) {
+    moduleDidCompleted(_path, contents, _options) {
+      bundler.logger.log('[hook]', bundler.chalk.cyan('moduleDidCompleted'));
+
       return contents;
     }
   }
@@ -74,10 +80,11 @@ function build() {
   fs.removeSync('dist');
 
   return gulp
-    .src('assets/view/**/*.css', { base: 'assets' })
+    .src(combine ? 'assets/view/**/*.css' : 'assets/**/*.css', { base: 'assets' })
     .pipe(
-      through((vinyl, enc, next) => {
+      through((vinyl, _enc, next) => {
         bundler.logger.log('Building', bundler.chalk.green(unixify(vinyl.relative)));
+
         next(null, vinyl);
       })
     )
