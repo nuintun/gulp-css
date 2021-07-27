@@ -17,7 +17,7 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# nyc test coverage
+# Nyc test coverage
 .nyc_output
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
@@ -26,7 +26,7 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
-# node-waf configuration
+# Node-waf configuration
 .lock-wscript
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
@@ -51,50 +51,50 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# Dotenv environment variables file
 .env
 
-# next.js build output
+# Next.js build output
 .next
 
-# git ignore configuration
+# Git ignore configuration
 .gitignore
 
-# npm ignore configuration
+# Npm ignore configuration
 .npmignore
 
-# travis configuration
+# Travis configuration
 .travis.yml
 
-# appveyor configuration
+# Appveyor configuration
 appveyor.yml
 
-# tests directories
-tests
+# Tests directories
 test
+tests
 
-# npm configuration
+# Npm configuration
 .npmrc
 
-# vscode configuration
+# Vscode configuration
 .vscode
 
-# yarn lock file
+# Yarn lock file
 yarn.lock
 
-# npm lock file
+# Npm lock file
 package-lock.json
 
-# typescript configuration
+# Typescript configuration
 tsconfig.json
 
-# src file
+# Src file
 src/
 
-# github pages
+# Github pages
 _config.yml
 
-# github
+# Github
 .github/
 
 # Rollup configure file
